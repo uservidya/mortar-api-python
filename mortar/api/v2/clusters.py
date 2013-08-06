@@ -1,0 +1,3 @@
+CLUSTER_TYPE_SINGLE_JOB = 'single_job'
+CLUSTER_TYPE_PERSISTENT = 'persistent'
+CLUSTER_TYPE_PERMANENT  = 'permanent'
