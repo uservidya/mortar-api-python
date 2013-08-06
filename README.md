@@ -21,5 +21,6 @@ cluster_size = 2
 
 # run and monitor the job
 api = API(email, api_key)
+job_id = jobs.post_job_new_cluster(api, project_name, script_name, cluster_size)
 final_job_status = jobs.block_until_job_complete(api, job_id)
 ```
