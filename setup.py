@@ -22,6 +22,9 @@ setup(name='mortar-api-python',
       author='Mortar Data',
       author_email='info@mortardata.com',
       url='http://github.com/mortardata/mortar-api-python',
+      namespace_packages = [
+        'mortar'
+      ],
       packages=[
           'mortar.api'
       ],
