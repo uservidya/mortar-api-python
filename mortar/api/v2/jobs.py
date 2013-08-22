@@ -22,7 +22,8 @@ COMPLETE_STATUSES = (\
     STATUS_PLAN_ERROR, 
     STATUS_SUCCESS, 
     STATUS_EXECUTION_ERROR, 
-    STATUS_SERVICE_ERROR)
+    STATUS_SERVICE_ERROR,
+    STATUS_STOPPED)
 
 def post_job_new_cluster(api, project_name, script_name, cluster_size, cluster_type=clusters.CLUSTER_TYPE_PERSISTENT,
                          git_ref='master', parameters=None, notify_on_job_finish=True, is_control_script=False):
@@ -40,6 +41,24 @@ def post_job_new_cluster(api, project_name, script_name, cluster_size, cluster_t
         body["pigscript_name"] = script_name
     
     return api.post('jobs', body)['job_id']
+
+
+def post_job_existing_cluster(api, project_name, script_name, cluster_id, cluster_type=clusters.CLUSTER_TYPE_PERSISTENT,
+                              git_ref='master', parameters=None, notify_on_job_finish=True, is_control_script=False):
+    body = {'project_name': project_name,
+            'git_ref': git_ref,            
+            'cluster_id': cluster_id,
+            'parameters': parameters or {},
+            'notify_on_job_finish': notify_on_job_finish
+    }
+    
+    if is_control_script:        
+        body["controlscript_name"] = script_name
+    else:
+        body["pigscript_name"] = script_name
+    
+    return api.post('jobs', body)['job_id']
+    
 
 def get_job(api, job_id):
     return api.get('jobs/%s' % job_id)
