@@ -26,7 +26,8 @@ setup(name='mortar-api-python',
         'mortar'
       ],
       packages=[
-          'mortar.api'
+          'mortar.api',
+          'mortar.api.v2'
       ],
       license='LICENSE.txt',
       install_requires=[
