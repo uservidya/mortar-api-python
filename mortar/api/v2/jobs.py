@@ -26,7 +26,8 @@ COMPLETE_STATUSES = (\
     STATUS_STOPPED)
 
 def post_job_new_cluster(api, project_name, script_name, cluster_size, cluster_type=clusters.CLUSTER_TYPE_PERSISTENT,
-                         git_ref='master', parameters=None, notify_on_job_finish=True, is_control_script=False):
+                         git_ref='master', parameters=None, notify_on_job_finish=True, is_control_script=False,
+                         pig_version=None):
     body = {'project_name': project_name,
             'git_ref': git_ref,            
             'cluster_size': cluster_size,
@@ -39,12 +40,16 @@ def post_job_new_cluster(api, project_name, script_name, cluster_size, cluster_t
         body["controlscript_name"] = script_name
     else:
         body["pigscript_name"] = script_name
-    
+
+    if pig_version:
+        body["pig_version"] = pig_version
+
     return api.post('jobs', body)['job_id']
 
 
 def post_job_existing_cluster(api, project_name, script_name, cluster_id, cluster_type=clusters.CLUSTER_TYPE_PERSISTENT,
-                              git_ref='master', parameters=None, notify_on_job_finish=True, is_control_script=False):
+                              git_ref='master', parameters=None, notify_on_job_finish=True, is_control_script=False,
+                              pig_version=None):
     body = {'project_name': project_name,
             'git_ref': git_ref,            
             'cluster_id': cluster_id,
@@ -56,7 +61,10 @@ def post_job_existing_cluster(api, project_name, script_name, cluster_id, cluste
         body["controlscript_name"] = script_name
     else:
         body["pigscript_name"] = script_name
-    
+
+    if pig_version:
+        body["pig_version"] = pig_version
+
     return api.post('jobs', body)['job_id']
     
 
