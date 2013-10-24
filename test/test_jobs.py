@@ -1,6 +1,5 @@
 import unittest
 
-from mortar.api.v2 import api
 from mortar.api.v2 import jobs
 
 import mock
