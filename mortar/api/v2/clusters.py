@@ -29,7 +29,29 @@ CLUSTER_TYPE_PERSISTENT = 'persistent'
 CLUSTER_TYPE_PERMANENT  = 'permanent'
 
 def get_clusters(api):
+    """
+    Get recent and running clusters.
+    
+    :type api: :class:`mortar.api.v2.api.API`
+    :param api: API
+    
+    :raises: requests.exception.HTTPError: if a 40x or 50x error occurs
+    
+    :rtype: dict:
+    :returns: running and recent clusters
+    """
     return api.get('clusters')
 
 def stop_cluster(api, cluster_id):
+    """
+    Stop a running cluster.
+    
+    :type api: :class:`mortar.api.v2.api.API`
+    :param api: API
+
+    :type cluster_id: str
+    :param cluster_id: cluster to stop
+    
+    :raises: requests.exception.HTTPError: if a 40x or 50x error occurs    
+    """
     api.delete('clusters/%s' % cluster_id)
