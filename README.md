@@ -71,6 +71,7 @@ recent_clusters = clusters.get_clusters(api)
 
 running_clusters = [c for c in recent_clusters if c['status_code] == clusters.CLUSTER_STATUS_RUNNING]
 ```
-# API Documentation
+# Documentation
 
-[Mortar API Documentation](http://mortar-api-python.readthedocs.org/en/latest/)
+* [Mortar API specification](http://help.mortardata.com/reference/api/api_version_2).
+* [mortar-api-python doc](http://mortar-api-python.readthedocs.org/en/latest/)
