@@ -4,6 +4,7 @@ The Mortar API Client for Python is a Python wrapper to interact with [Mortar](h
 
 See Mortar's help site for the [Mortar API specification](http://help.mortardata.com/reference/api/api_version_2).
 
+
 # Examples
 
 ## Running a Mortar Job
@@ -60,3 +61,6 @@ recent_clusters = clusters.get_clusters(api)
 
 running_clusters = [c for c in recent_clusters if c['status_code] == clusters.CLUSTER_STATUS_RUNNING]
 ```
+# API Documentation
+
+[Mortar API Documentation](http://mortar-api-python.readthedocs.org/en/latest/)
