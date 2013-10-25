@@ -4,6 +4,16 @@ The Mortar API Client for Python is a Python wrapper to interact with [Mortar](h
 
 See Mortar's help site for the [Mortar API specification](http://help.mortardata.com/reference/api/api_version_2).
 
+[![Build Status](https://travis-ci.org/mortardata/mortar-api-python.png?branch=master)](https://travis-ci.org/mortardata/mortar-api-python)
+
+# Installation
+
+Pick up the latest version of mortar-api-python from PyPi:
+
+
+```bash
+pip install mortar-api-python
+````
 
 # Examples
 
