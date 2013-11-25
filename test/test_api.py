@@ -34,6 +34,31 @@ class TestAPI(unittest.TestCase):
         test_api = api.API(self.email, self.api_key, self.scheme, self.host)
         self.assertEquals('https://localhost/v2/jobs', test_api.url('jobs'))
     
+    def test_raise_for_status(self):
+        test_api = api.API(self.email, self.api_key, self.scheme, self.host)
+        response_mock_400 = mock.Mock()
+        response_mock_400.status_code = 400
+        response_mock_400.reason = 'Bad Request'
+        response_mock_400.text = 'More details to help debug'
+
+        try:
+            test_api.raise_for_status(response_mock_400)
+            self.fail('Expected 400 error')
+        except HTTPError as e:
+            self.assertEquals('400 Client Error: Bad Request\nMore details to help debug',
+                              str(e))
+
+        response_mock_500 = mock.Mock()
+        response_mock_500.status_code = 500
+        response_mock_500.reason = 'Internal Server Error'
+        
+        with self.assertRaises(HTTPError) as cm:
+            test_api.raise_for_status(response_mock_500)
+
+        response_mock_200 = mock.Mock()
+        response_mock_200.status_code = 200
+        test_api.raise_for_status(response_mock_200)
+
     @mock.patch('mortar.api.v2.api.requests')
     def test_post(self, requests_mock):
         test_api = api.API(self.email, self.api_key, self.scheme, self.host)
@@ -65,7 +90,9 @@ class TestAPI(unittest.TestCase):
         json_payload = '{"param0": "bar"}'
 
         response_mock = mock.Mock()
-        response_mock.raise_for_status.side_effect = HTTPError('400 Client Error: Bad Request')
+        response_mock.status_code = 400
+        response_mock.reason = 'Bad Request'
+        response_mock.text = 'Some deeper reasons'
         requests_mock.post.return_value = response_mock
         
         self.assertRaises(HTTPError, test_api.post, path, payload)
@@ -99,7 +126,9 @@ class TestAPI(unittest.TestCase):
         json_payload = '{"param0": "bar"}'
 
         response_mock = mock.Mock()
-        response_mock.raise_for_status.side_effect = HTTPError('400 Client Error: Bad Request')
+        response_mock.status_code = 400
+        response_mock.reason = 'Bad Request'
+        response_mock.text = 'Some deeper reasons'
         requests_mock.get.return_value = response_mock
         
         self.assertRaises(HTTPError, test_api.get, path, params)
@@ -134,8 +163,11 @@ class TestAPI(unittest.TestCase):
         url = 'https://localhost/v2/%s' % path
         json_payload = '{"param0": "bar"}'
 
+
         response_mock = mock.Mock()
-        response_mock.raise_for_status.side_effect = HTTPError('400 Client Error: Bad Request')
+        response_mock.status_code = 400
+        response_mock.reason = 'Bad Request'
+        response_mock.text = 'Some deeper reasons'
         requests_mock.put.return_value = response_mock
 
         self.assertRaises(HTTPError, test_api.put, path, payload)
@@ -162,7 +194,9 @@ class TestAPI(unittest.TestCase):
         path = 'foo/bar'
         url = 'https://localhost/v2/%s' % path
         response_mock = mock.Mock()
-        response_mock.raise_for_status.side_effect = HTTPError('400 Client Error: Bad Request')
+        response_mock.status_code = 400
+        response_mock.reason = 'Bad Request'
+        response_mock.text = 'Some deeper reasons'
         requests_mock.delete.return_value = response_mock
 
         self.assertRaises(HTTPError, test_api.delete, path)

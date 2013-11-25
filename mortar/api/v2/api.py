@@ -17,6 +17,7 @@
 import json
 import requests
 from requests.auth import HTTPBasicAuth
+from requests.exceptions import HTTPError
 
 class API(object):
     """
@@ -83,7 +84,7 @@ class API(object):
         response = requests.post(post_url, data=json_payload, auth=self.auth, headers=API.HEADERS)
         
         # test and return
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.json()
     
     def get(self, path, params=None):
@@ -106,7 +107,7 @@ class API(object):
         response = requests.get(get_url, params=params, auth=self.auth, headers=API.HEADERS)
 
         # test and return
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.json()
     
     def put(self, path, payload):
@@ -130,7 +131,7 @@ class API(object):
         response = requests.put(put_url, data=json_payload, auth=self.auth, headers=API.HEADERS)
 
         # test and return
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.json()
 
     def delete(self, path):
@@ -150,6 +151,20 @@ class API(object):
         response = requests.delete(delete_url, auth=self.auth, headers=API.HEADERS)
 
         # test and return
-        response.raise_for_status()
+        self.raise_for_status(response)
     
+    def raise_for_status(self, response):
+        """Raises stored :class:`HTTPError`, if one occurred."""
+
+        http_error_msg = ''
+
+        if 400 <= response.status_code < 500:
+            http_error_msg = '%s Client Error: %s\n%s' % \
+                (response.status_code, response.reason, response.text)
+
+        elif 500 <= response.status_code < 600:
+            http_error_msg = '%s Server Error: %s' % (response.status_code, response.reason)
+
+        if http_error_msg:
+            raise HTTPError(http_error_msg, response=response)
 
