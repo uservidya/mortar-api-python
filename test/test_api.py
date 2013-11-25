@@ -52,8 +52,7 @@ class TestAPI(unittest.TestCase):
         response_mock_500.status_code = 500
         response_mock_500.reason = 'Internal Server Error'
         
-        with self.assertRaises(HTTPError) as cm:
-            test_api.raise_for_status(response_mock_500)
+        self.assertRaises(HTTPError, test_api.raise_for_status, response_mock_500)
 
         response_mock_200 = mock.Mock()
         response_mock_200.status_code = 200
